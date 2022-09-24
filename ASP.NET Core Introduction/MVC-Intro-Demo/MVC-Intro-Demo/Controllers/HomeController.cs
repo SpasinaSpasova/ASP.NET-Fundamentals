@@ -35,6 +35,7 @@ namespace MVC_Intro_Demo.Controllers
         }
         public IActionResult NumbersToN(int count=3)
         {
+            /*It should accept a count parameter from the view (with default value of the parameter 3). Then, it should add the count number to a ViewBag and return a view:*/
             ViewBag.Count = count;
             return View();
         }

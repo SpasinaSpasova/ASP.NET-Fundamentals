@@ -29,6 +29,7 @@ namespace MVC_Intro_Demo.Controllers
             },
         };
 
+        /*should only return a view with the products collection*/
         [ActionName("My-Products")]
         public IActionResult All(string keyword)
         {
@@ -41,6 +42,7 @@ namespace MVC_Intro_Demo.Controllers
             }
             return View(this.products);
         }
+        /*It should pass a product by a given id to the view, if it exists. If it does not, it should return a BadRequest*/
         public IActionResult ById(int id)
         {
             var product=this.products.FirstOrDefault(p => p.Id == id);

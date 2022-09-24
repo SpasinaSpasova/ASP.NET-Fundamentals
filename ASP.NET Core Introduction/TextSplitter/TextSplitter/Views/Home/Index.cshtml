@@ -4,6 +4,7 @@
     ViewBag.Title = "TextSplitter";
 }
 
+
 <form asp-controller="Home" asp-action="Split" method="post">
     <div class="col-12">
         <input asp-for="@Model.Text" class="mr-2" />
@@ -14,6 +15,7 @@
         <textarea rows="10">@Model.SplitText</textarea>
     </div>
 </form>
+
 
 @section Scripts{
     <partial name="_ValidationScriptsPartial"/>
