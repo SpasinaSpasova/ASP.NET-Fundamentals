@@ -1,11 +1,14 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 using WebShop.Core.Contracts;
+using WebShop.Core.Data.Models;
 using WebShop.Core.Models;
+using WebShopDemo.Core.Data.Common;
 
 namespace WebShop.Core.Services
 {
-   
+
     /// <summary>
     /// Manipulates product data
     /// </summary>
@@ -16,9 +19,42 @@ namespace WebShop.Core.Services
         /// IoC 
         /// </summary>
         /// <param name="_config">Application configuration</param>
-        public ProductService(IConfiguration _config)
+        /// 
+        private readonly IRepository repo;
+        public ProductService(IConfiguration _config, IRepository _repo)
         {
             config = _config;
+            repo = _repo;
+        }
+
+        /// <summary>
+        /// Add new product
+        /// </summary>
+        /// <param name="productDto">Product model</param>
+        /// <returns></returns>
+        public async Task Add(ProductDto productDto)
+        {
+            var product = new Product()
+            {
+                Name = productDto.Name,
+                Price = productDto.Price,
+                Quantity = productDto.Quantity
+            };
+
+            await repo.AddAsync(product);
+            await repo.SaveChangesAsync();
+        }
+
+        public async Task Delete(Guid id)
+        {
+            var product = await repo.All<Product>().FirstOrDefaultAsync(p => p.Id == id);
+
+            if (product!=null)
+            {
+                product.IsActive = false;
+
+                await repo.SaveChangesAsync();
+            }
         }
 
         /// <summary>
@@ -27,10 +63,14 @@ namespace WebShop.Core.Services
         /// <returns>List of products</returns>
         public async Task<IEnumerable<ProductDto>> GetAll()
         {
-            string dataPath = config.GetSection("DataFiles:Products").Value;
-            string data = await File.ReadAllTextAsync(dataPath);
-
-            return JsonConvert.DeserializeObject<IEnumerable<ProductDto>>(data);
+            return await repo.AllReadonly<Product>()
+                .Where(p => p.IsActive).Select(p => new ProductDto()
+                {
+                    Id = p.Id,
+                    Name = p.Name,
+                    Price = p.Price,
+                    Quantity = p.Quantity
+                }).ToListAsync();
         }
     }
 }
