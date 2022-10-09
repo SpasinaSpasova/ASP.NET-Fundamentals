@@ -15,11 +15,36 @@ namespace WebShop.Controllers
 
         public IActionResult Index()
         {
+            this.HttpContext.Session.SetString("name", "pesho");
+
+
+            //if (TempData.ContainsKey("LastAccessTime"))
+            //{
+                // TempData.Keep("LastAccessTime");
+
+            //    return Ok(TempData["LastAccessTime"]);
+
+            //}
+
+            //TempData["LastAccessTime"] = DateTime.Now;
+            //this.HttpContext.Response.Cookies.Append("mycookie", "Pesho");
+
+            //this.HttpContext.Response.Cookies.Append("mycookie", "Pesho",new CookieOptions()
+            //{
+
+            //});
             return View();
         }
 
         public IActionResult Privacy()
         {
+            string? name= this.HttpContext.Session.GetString("name");
+
+            if (!string.IsNullOrEmpty(name))
+            {
+                return Ok(name);
+            }
+
             return View();
         }
 
