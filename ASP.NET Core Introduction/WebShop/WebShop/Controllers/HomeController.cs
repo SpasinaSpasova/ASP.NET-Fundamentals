@@ -38,12 +38,12 @@ namespace WebShop.Controllers
 
         public IActionResult Privacy()
         {
-            string? name= this.HttpContext.Session.GetString("name");
+            //string? name= this.HttpContext.Session.GetString("name");
 
-            if (!string.IsNullOrEmpty(name))
-            {
-                return Ok(name);
-            }
+            //if (!string.IsNullOrEmpty(name))
+            //{
+            //    return Ok(name);
+            //}
 
             return View();
         }

@@ -8,7 +8,6 @@ namespace WebShop.Controllers
     /// <summary>
     /// Web shop products
     /// </summary>
-    /// 
 
     [Authorize]
     public class ProductController : Controller
