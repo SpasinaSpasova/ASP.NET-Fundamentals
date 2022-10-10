@@ -8,6 +8,7 @@
             <summary>
             Web shop products
             </summary>
+            
         </member>
         <member name="M:WebShop.Controllers.ProductController.Index">
             <summary>

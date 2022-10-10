@@ -4,10 +4,11 @@ using Microsoft.Extensions.Configuration;
 using System.Reflection.Emit;
 using System.Reflection.Metadata;
 using WebShop.Core.Data.Models;
+using WebShop.Core.Data.Models.Account;
 
 namespace WebShop.Core.Data
 {
-    public class ApplicationDbContext : IdentityDbContext
+    public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
