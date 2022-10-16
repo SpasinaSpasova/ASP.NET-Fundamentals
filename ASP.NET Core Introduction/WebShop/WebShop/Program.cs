@@ -5,6 +5,7 @@ using WebShop.Core.Services;
 using WebShop.Core.Data;
 using WebShopDemo.Core.Data.Common;
 using WebShop.Core.Data.Models.Account;
+using WebShop.Core.Constants;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -23,11 +24,18 @@ builder.Services.AddDefaultIdentity<ApplicationUser>(options =>
     options.Password.RequiredLength = 6;
 
     options.User.RequireUniqueEmail = true;
-}).AddEntityFrameworkStores<ApplicationDbContext>();
+})
+    .AddRoles<IdentityRole>()
+    .AddEntityFrameworkStores<ApplicationDbContext>();
 
 builder.Services.ConfigureApplicationCookie(options =>
 {
     options.LoginPath = "/Account/Login";
+});
+
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("CanDeleteProduct", policy => policy.RequireAssertion(context => context.User.IsInRole(RoleConstants.Manager) && context.User.IsInRole(RoleConstants.Supervisor)));
 });
 
 builder.Services.AddControllersWithViews();

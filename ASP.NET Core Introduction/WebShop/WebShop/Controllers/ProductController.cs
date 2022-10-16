@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using WebShop.Core.Constants;
 using WebShop.Core.Contracts;
 using WebShop.Core.Models;
 
@@ -9,8 +10,7 @@ namespace WebShop.Controllers
     /// Web shop products
     /// </summary>
 
-    [Authorize]
-    public class ProductController : Controller
+    public class ProductController : BaseController
     {
         private readonly IProductService productService;
 
@@ -22,6 +22,7 @@ namespace WebShop.Controllers
         /// List all products
         /// </summary>
         /// <returns></returns>
+        [AllowAnonymous]
         public async Task<IActionResult> Index()
         {
             var products = await productService.GetAll();
@@ -30,6 +31,7 @@ namespace WebShop.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = $"{RoleConstants.Manager},{RoleConstants.Supervisor}")]
         public IActionResult Add()
         {
             var model = new ProductDto();
@@ -39,6 +41,8 @@ namespace WebShop.Controllers
             return View(model);
         }
         [HttpPost]
+        [Authorize(Roles = $"{RoleConstants.Manager},{RoleConstants.Supervisor }")]
+
         public async Task<IActionResult> Add(ProductDto model)
         {
             ViewData["Title"] = "Add new product";
@@ -54,6 +58,7 @@ namespace WebShop.Controllers
         }
 
         [HttpPost]
+        [Authorize(Policy ="CanDeleteProduct")]
         public async Task<IActionResult> Delete([FromForm] string id)
         {
             Guid idGuid = Guid.Parse(id);
