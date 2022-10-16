@@ -8,9 +8,11 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using TaskBoardApp.Data.Entities;
 using Task = System.Threading.Tasks.Task;
+using Microsoft.AspNetCore.Authorization;
 
 namespace TaskBoardApp.Areas.Identity.Pages.Account
 {
+    
     public class RegisterModel : PageModel
     {
         private readonly SignInManager<User> _signInManager;

@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿ using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 using System.Security.Claims;
 using TaskBoardApp.Data;
@@ -15,6 +15,11 @@ namespace TaskBoardApp.Controllers
         {
             this.data = context;
         }
+
+        /// <summary>
+        /// Gets all boards name from DB and create HomeBoardModel with count of tasks in current board with vurrent board name
+        /// </summary>
+        /// <returns></returns>
 
         public IActionResult Index()
         {
@@ -35,8 +40,12 @@ namespace TaskBoardApp.Controllers
 
             }
 
+            /// <summary>
+            /// Gets a currentUser tasks count and create HomeViewModel where we sets users tasks counts, all tasks count in DB and all boards with current tasks count
+            /// </summary>
+            /// <returns></returns>
             var userTasksCount = -1;
-
+            
             if (this.User.Identity.IsAuthenticated)
             {
                 var currentUserId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
